@@ -31,6 +31,8 @@ echo $uboot_md5
 hash1="f3066582267c857e24097b4aecd3e9a1"
 hash2="ab709449c98f89cfa57e119b0f37b388"
 hash3="85ae38d2a62b124f431ba5baba6b42ad"
+hash4="d75be109e242ee8923cb45f1cb082f83"
+hash5="7bc2f7766b270ea120495334cd1e5c56"
 
 #verify uboot firmware is as expected
 #do not bypass this check or you will brick your device
@@ -43,6 +45,12 @@ elif [ "$uboot_md5" == "$hash2" ]; then
 elif [ "$uboot_md5" == "$hash3" ]; then
     echo "Hash matches third known hash! Performing action C."
     fix_uboot="mw 4a9115c8 0a000007 1;mw 4a91e534 0a000006 1;setenv loadaddr 44000000;setenv ipaddr 192.168.0.5;setenv serverip 192.168.0.1;go 4a966bc4 || sleep 3;"
+elif [ "$uboot_md5" == "$hash4" ]; then
+    echo "Hash matches third known hash! Performing action C."
+    fix_uboot="mw 4a910f88 0a000007 1;mw 4a91df24 0a000006 1;setenv loadaddr 44000000;setenv ipaddr 192.168.0.5;setenv serverip 192.168.0.1;go 4a964714 || sleep 3;"
+elif [ "$uboot_md5" == "$hash5" ]; then
+    echo "Hash matches third known hash! Performing action C."
+    fix_uboot="mw 4a9115a8 0a000007 1;mw 4a91e514 0a000006 1;setenv loadaddr 44000000;setenv ipaddr 192.168.0.5;setenv serverip 192.168.0.1;go 4a966ba4 || sleep 3;"
 else
     echo "Hashes do not match any known hash. dump uboot and submit issue"
     exit 1
