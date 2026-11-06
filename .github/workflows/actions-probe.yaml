@@ -1,0 +1,9 @@
+name: Actions runner probe
+on:
+  workflow_dispatch:
+permissions: {}
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo runner-ok
