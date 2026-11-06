@@ -38,6 +38,8 @@ Additionally, the `uci` commands in the "Quality-of-Life Enhancements" section a
 To enhance the security of SSH connections, the project includes a hardened SSH configuration. The configuration is derived from recommendations by [SSH-Audit](https://github.com/jtesta/ssh-audit) and the [BSI](https://www.bsi.bund.de/), it specifies strong key exchange algorithms, ciphers, message authentication codes (MACs), host key algorithms, and public key algorithms. This ensures that only secure and up-to-date algorithms are used for SSH communication.
 
 
+Builds require OpenSSH 10.6p2 or newer, which includes the [sshole authentication bypass fix](https://www.openssh.org/releasenotes.html#10.6p2) for musl systems without PAM. The workflow checks the packages feed version before building and stops if it is too old. Push this change or run the build workflow manually, then install the resulting firmware to update existing devices. SSH password and key login settings are unchanged.
+
 ## Contributing
 
 Contributions to this project are welcome. If you encounter any issues or have suggestions for improvements, please open an issue or submit a pull request on the GitHub repository.
