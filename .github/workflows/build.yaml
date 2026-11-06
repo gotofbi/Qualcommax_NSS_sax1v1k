@@ -43,7 +43,7 @@ jobs:
   build:
     name: Build OpenWrt
     needs: check_commits
-    if: needs.check_commits.outputs.new_commits == 'true' || needs.check_commits.outputs.nss_packages_repo_new_commits == 'true' || github.event_name == 'workflow_dispatch'
+    if: needs.check_commits.outputs.new_commits == 'true' || needs.check_commits.outputs.nss_packages_repo_new_commits == 'true' || github.event_name == 'workflow_dispatch' || github.event_name == 'push'
     runs-on: ubuntu-24.04
     steps:
       - name: Install dependencies
@@ -67,6 +67,15 @@ jobs:
         run: |
           ./scripts/feeds update -a
           ./scripts/feeds install -a
+      - name: Require OpenSSH sshole fix
+        run: |
+          # https://www.openssh.org/releasenotes.html#10.6p2
+          openssh_version=$(sed -n 's/^PKG_REALVERSION:=//p' feeds/packages/net/openssh/Makefile)
+          if [ "$(printf '%s\n' 10.6p2 "$openssh_version" | sort -V | head -n 1)" != "10.6p2" ]; then
+            echo "::error::OpenSSH 10.6p2 or newer is required for the sshole authentication bypass fix (found: $openssh_version)"
+            exit 1
+          fi
+          echo "Building with OpenSSH $openssh_version (sshole fix included)"
       - name: Configure firmware image
         run: |
           mv custom_repo/${{ env.CONFIG_FILE }} .config
